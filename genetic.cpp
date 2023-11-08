@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <chrono>
 #include <numeric>
 #include <string>
 #include <vector>
@@ -77,9 +78,7 @@ void mutate(pair<int,string>& individual, vector<string> dataset) {
 int main(int argc, char const *argv[]) {
     // Definir tus parámetros
     int populationSize = 100;
-    int generations = 1000;
     double mutationRate = 0.1;
-    int maxTime = 60;
 
     // Leer archivo
     srand(time(NULL));
@@ -121,8 +120,15 @@ int main(int argc, char const *argv[]) {
         pair<int, string> greedyResult = greedyAlgorithm(dataset, alpha);
         population.push_back(greedyResult);
     }
-    
-    for (int generation = 0; generation < generations; generation++) {
+    auto startTime = chrono::high_resolution_clock::now();
+    double getTime = 0.0;
+    while (true) {
+        // Comprueba el tiempo transcurrido en cada iteración.
+        auto currentTime = chrono::high_resolution_clock::now();
+        auto elapsedSeconds = chrono::duration_cast<chrono::seconds>(currentTime - startTime).count();
+        if (elapsedSeconds >= timeLimit) {
+            break;  // Detener GRASP si se excede el límite de tiempo.
+        }
         vector<pair<int,string>> newPopulation;
         for (int i = 0; i < populationSize / 2; i++) {
             // Seleccionar dos padres
@@ -143,13 +149,16 @@ int main(int argc, char const *argv[]) {
             newPopulation.push_back(child1);
             newPopulation.push_back(child2);
         }
+        
         pair<int,string> actualBest = *min_element(newPopulation.begin(), newPopulation.end(), [](const pair<int, string>& a, const pair<int, string>& b) {
         return a.first < b.first;
         });
         if(actualBest.first < bestIndividual.first){
             population = newPopulation;
             bestIndividual = actualBest;
+            getTime = chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count();
             cout<<"actualBest: "<<actualBest.first<<" "<<actualBest.second<<endl;
+            cout<<"encontrado en el tiempo: "<<getTime<<endl;
         }
     }
 
@@ -157,6 +166,7 @@ int main(int argc, char const *argv[]) {
 
     cout << "Mejor solución encontrada: " << bestIndividual.second << endl;
     cout << "Costo: " << bestIndividual.first << endl;
+    cout << "tiempo total: "<< chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count()<<endl;
 
     return 0;
 }
