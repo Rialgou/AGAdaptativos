@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]) {
 
     // Leer archivo
     srand(time(NULL));
-    if (argc > 5) {
+    if (argc > 9) {
         if (argv[1][0] != '-' || argv[1][1] != 'i') {
             cout << "Debes ingresar el comando -i " << endl;
             return 0;
@@ -91,18 +91,27 @@ int main(int argc, char const *argv[]) {
             cout <<"Debes ingresar el comando -t" <<endl;
             return 0;
         }
+        if(argv[5][0] != '-'||argv[5][1] != 'p'){
+            cout <<"Debes ingresar el comando -p"<<endl;
+            return 0;
+        }
+        if(argv[7][0] != '-'||argv[7][1] != 'm'){
+            cout <<"Debes ingresar el comando -m"<<endl;
+            return 0;
+        }
     } else {
         cout << "Debes ingresar el formato de ejecución <Greedy> -i "
-                "<instancia-problema> -t <tiempo-maximo-segundos> <probabilidad-aleatoriedad> "
-             << endl;
+                "<instancia-problema> -t <tiempo-maximo-segundos> -p <tamaño-población> -m <mutation-rate> <probabilidad-aleatoriedad> " << endl;
         return 0;
     }
 
     fstream file;
     string path = argv[2];
     vector<string> dataset;
-    int alpha = atoi(argv[5]);
+    int alpha = atoi(argv[9]);
     int timeLimit = atoi(argv[4]);
+    populationSize = atoi(argv[6]);
+    mutationRate = atoi(argv[8]);
     file.open(path, ios::in);
 
     if (file.is_open()) {
@@ -157,16 +166,16 @@ int main(int argc, char const *argv[]) {
             population = newPopulation;
             bestIndividual = actualBest;
             getTime = chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count();
-            cout<<"actualBest: "<<actualBest.first<<" "<<actualBest.second<<endl;
-            cout<<"encontrado en el tiempo: "<<getTime<<endl;
+            //cout<<"actualBest: "<<actualBest.first<<" "<<actualBest.second<<endl;
+            //cout<<"encontrado en el tiempo: "<<getTime<<endl;
         }
     }
 
     // Encuentra el mejor individuo en la población final
 
-    cout << "Mejor solución encontrada: " << bestIndividual.second << endl;
+    //cout << "Mejor solución encontrada: " << bestIndividual.second << endl;
     cout << "Costo: " << bestIndividual.first << endl;
-    cout << "tiempo total: "<< chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count()<<endl;
+    //cout << "tiempo total: "<< chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count()<<endl;
 
     return 0;
 }
