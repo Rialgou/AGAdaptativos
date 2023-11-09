@@ -99,9 +99,13 @@ int main(int argc, char const *argv[]) {
             cout <<"Debes ingresar el comando -m"<<endl;
             return 0;
         }
+        if(argv[9][0] != '-'||argv[9][1] != 'p'||argv[9][2] !='a'){
+            cout <<"Debes ingresar el comando -pa"<<endl;
+            return 0;
+        }
     } else {
         cout << "Debes ingresar el formato de ejecución <Greedy> -i "
-                "<instancia-problema> -t <tiempo-maximo-segundos> -p <tamaño-población> -m <mutation-rate> <probabilidad-aleatoriedad> " << endl;
+                "<instancia-problema> -t <tiempo-maximo-segundos> -p <tamaño-población> -m <mutation-rate> -pa <probabilidad-aleatoriedad> " << endl;
         return 0;
     }
 
@@ -174,7 +178,7 @@ int main(int argc, char const *argv[]) {
     // Encuentra el mejor individuo en la población final
 
     //cout << "Mejor solución encontrada: " << bestIndividual.second << endl;
-    cout << "Costo: " << bestIndividual.first << endl;
+    cout << bestIndividual.first << endl;
     //cout << "tiempo total: "<< chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count()<<endl;
 
     return 0;
