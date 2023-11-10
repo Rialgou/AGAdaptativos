@@ -112,10 +112,11 @@ int main(int argc, char const *argv[]) {
     fstream file;
     string path = argv[2];
     vector<string> dataset;
-    int alpha = atoi(argv[9]);
+    int alpha = atoi(argv[10]);
     int timeLimit = atoi(argv[4]);
     populationSize = atoi(argv[6]);
-    mutationRate = atoi(argv[8]);
+    mutationRate = atof(argv[8]);
+    cout<<"probabilidad: "<<alpha<<endl<<"time: "<<timeLimit<<endl<< "populationSize: " <<populationSize<<endl<<"mutationrate "<<mutationRate<<endl;
     file.open(path, ios::in);
 
     if (file.is_open()) {
@@ -170,8 +171,8 @@ int main(int argc, char const *argv[]) {
             population = newPopulation;
             bestIndividual = actualBest;
             getTime = chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - startTime).count();
-            //cout<<"actualBest: "<<actualBest.first<<" "<<actualBest.second<<endl;
-            //cout<<"encontrado en el tiempo: "<<getTime<<endl;
+            cout<<"actualBest: "<<actualBest.first<<" "<<actualBest.second<<endl;
+            cout<<"encontrado en el tiempo: "<<getTime<<endl;
         }
     }
 
